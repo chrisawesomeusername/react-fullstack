@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import  axios from 'axios';
+import 'bootstrap/dist/css/bootstrap.min.css'
 
 class Router extends Component{
   state = [
@@ -10,39 +11,48 @@ class Router extends Component{
   },
 ]
   componentDidMount(){
-    this.allProduct();
-    this.deleteProduct();
+    const BASE_URL = process.env.REACT_APP_BASE_URL;
+    console.log(BASE_URL);
+
+    this.allProduct(BASE_URL);
+    this.deleteProduct(BASE_URL);
+    this.addProduct(BASE_URL);
+
   }
-  allProduct = () => {
-    console.log('Get product function called');
-    axios.get(`http://192.168.33.10:5000/allProduct`)
+  allProduct = (url) => {
+    console.log(`${url}/allProduct`);
+    axios.get(`${url}/allProduct`)
     .then(res =>{
       console.log(res.data);
     })
   }
-  deleteProduct = () => {
-    console.log("Delete product function called");
-    axios.delete(`http://192.168.33.10:5000/deleteProduct/5e6059cbcf154f0deef08a6b`)
+  deleteProduct = (url) => {
+    console.log(`${url}/deleteProduct/5e6059cbcf154f0deef08a6b`);
+    axios.delete(`${url}/deleteProduct/5e6059cbcf154f0deef08a6b`)
     .then(res => {
       console.log('Product deleted');
     });
   }
 
-  addProduct = () => {
-    console.log('Add product function called');
+  addProduct = (url) => {
+    console.log(`${url}/registerProduct`);
     const post = {
       name : this.state[0].name,
       price : this.state[0].price,
       user_id : this.state[0].user_id
     }
-    axios.post(`http://192.168.33.10:5000/registerProduct`, post)
+    axios.post(`${url}/registerProduct`, post)
     .then(res => {
       console.log(res.data);
     })
   }
 
   render(){
-    return(<h1>Get request to database</h1>)
+    const myStyle = {
+      backgroundColor : "green",
+      color : "blue"
+    }
+    return(<h1 style={myStyle}>Get request to database</h1>)
   }
 }
 
